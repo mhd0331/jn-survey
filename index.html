@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="진안군 행정정책 입안 시 대규모 여론조사 필요성 조사">
+    <meta name="theme-color" content="#2c5aa0">
+    
+    <!-- PWA 관련 메타 태그 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="진안군 설문조사">
+    
+    <title>진안군 디지털 여론조사 시스템</title>
+    
+    <!-- 매니페스트 -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 로딩 화면 -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>설문조사를 불러오는 중...</p>
+        </div>
+
+        <!-- 메인 설문조사 컨테이너 -->
+        <div id="surveyContainer" style="display: none;">
+            <!-- 헤더 -->
+            <header class="header">
+                <div class="header-content">
+                    <div class="logo">
+                        <svg width="60" height="60" viewBox="0 0 192 192" fill="none">
+                            <rect width="192" height="192" fill="#f8f9fa"/>
+                            <path d="M120.5 45L115 50.5L107.5 58L100 65.5V80L97.5 82.5L95 85L92.5 87.5L90 90L87.5 92.5L85 95L82.5 97.5L80 100L77.5 102.5L75 105L70.5 109.5L68 112L65.5 114.5L63 117L60.5 119.5L58 122L55.5 124.5L53 127L50 130L47.5 132.5L45 135L40 140L37.5 142.5L35 145L30 150" stroke="#000000" stroke-width="8" stroke-linecap="round"/>
+                            <path d="M30 150C40 155 55 158 75 155C95 152 110 145 120 140" stroke="#243A73" stroke-width="6" stroke-linecap="round"/>
+                            <path d="M100.5 65.5L120.5 45L125 49.5L105 70" fill="#000000"/>
+                            <path d="M95 85L100 80L105 85L100 90" fill="#000000"/>
+                        </svg>
+                    </div>
+                    <h1 id="surveyTitle">설문조사</h1>
+                    <p id="surveyDescription">설문조사 설명</p>
+                    <div class="survey-info" id="surveyInfo">
+                        <!-- 동적으로 생성 -->
+                    </div>
+                </div>
+            </header>
+
+            <!-- 컨텐츠 영역 -->
+            <main class="content">
+                <!-- 환영 메시지 -->
+                <section class="welcome-section" id="welcomeSection">
+                    <!-- 동적으로 생성 -->
+                </section>
+
+                <!-- 진행률 표시 -->
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span id="progressText">0% 완료</span>
+                    </div>
+                </div>
+
+                <!-- 설문 폼 -->
+                <form id="surveyForm" autocomplete="off">
+                    <div id="sectionsContainer">
+                        <!-- 동적으로 생성 -->
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" id="resetBtn">
+                            <span class="btn-icon">↺</span>
+                            초기화
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <span class="btn-icon">✓</span>
+                            설문 제출
+                        </button>
+                    </div>
+                </form>
+
+                <!-- 완료 화면 -->
+                <div class="thank-you" id="thankYou">
+                    <div class="check-icon">
+                        <svg viewBox="0 0 52 52">
+                            <circle cx="26" cy="26" r="25" fill="none"/>
+                            <path fill="none" d="M14 27l7.5 7.5L38 16"/>
+                        </svg>
+                    </div>
+                    <div id="thankYouContent">
+                        <!-- 동적으로 생성 -->
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="location.href='./'">
+                            홈으로
+                        </button>
+                        <button class="btn btn-primary" onclick="startNewSurvey()">
+                            설문 수정하기
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- 푸터 -->
+            <footer class="footer">
+                <p>© 2025 진안군청. 모든 권리 보유.</p>
+                <p>문의: 063-430-8000 | <a href="#">개인정보처리방침</a></p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- 오프라인 알림 -->
+    <div class="offline-notice" id="offlineNotice">
+        <span>🔌 오프라인 상태입니다. 연결이 복구되면 자동으로 동기화됩니다.</span>
+    </div>
+
+    <!-- 설치 프롬프트 -->
+    <div class="install-prompt" id="installPrompt" style="display: none;">
+        <div class="install-content">
+            <h3>앱으로 설치하기</h3>
+            <p>홈 화면에 추가하여 더 편리하게 이용하세요!</p>
+            <div class="install-buttons">
+                <button class="btn btn-secondary" id="installLater">나중에</button>
+                <button class="btn btn-primary" id="installNow">설치</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>

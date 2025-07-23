@@ -1,0 +1,427 @@
+{
+  "survey": {
+    "id": "jinan-policy-survey-2025",
+    "title": "진안군 행정정책 입안 시 대규모 여론조사 필요성 조사",
+    "description": "진안군에서 행정정책을 수립할 때 핸드폰이나 컴퓨터를 활용한 대규모 여론조사의 필요성과 효과성에 대한 군민 의견을 수렴하는 설문조사입니다.",
+    "category": "정책조사",
+    "estimatedTime": 7,
+    "maxResponses": 10000,
+    "period": {
+      "start": "2025.07.21",
+      "end": "2025.08.20"
+    },
+    "welcomeMessage": {
+      "title": "안녕하세요, 진안군입니다.",
+      "content": [
+        "본 설문조사는 진안군의 행정정책 수립 과정에서 디지털 기반 여론조사 도입에 대한 군민 여러분의 소중한 의견을 듣고자 실시됩니다.",
+        "여러분의 참여가 더 나은 진안군을 만드는 데 큰 도움이 됩니다.",
+        "※ 모든 응답은 통계 목적으로만 사용되며, 개인정보는 철저히 보호됩니다."
+      ]
+    },
+    "thankYouMessage": {
+      "title": "설문조사 완료",
+      "content": [
+        "설문조사에 참여해 주셔서 감사합니다.",
+        "여러분의 소중한 의견은 진안군의 정책 수립에 반영될 예정입니다.",
+        "더 나은 진안군을 위해 함께해 주세요!"
+      ]
+    }
+  },
+  "sections": [
+    {
+      "id": "demographics",
+      "title": "📝 1. 응답자 기본정보",
+      "description": "통계 분석을 위한 기본적인 정보를 수집합니다",
+      "order": 1
+    },
+    {
+      "id": "policy_participation",
+      "title": "🏛️ 2. 현재 정책 참여 현황",
+      "description": "진안군 정책에 대한 현재 참여도와 관심도를 조사합니다",
+      "order": 2
+    },
+    {
+      "id": "digital_perception",
+      "title": "💻 3. 디지털 여론조사에 대한 인식",
+      "description": "핸드폰/컴퓨터를 활용한 여론조사에 대한 생각을 조사합니다",
+      "order": 3
+    },
+    {
+      "id": "policy_necessity",
+      "title": "📊 4. 정책 분야별 여론조사 필요성",
+      "description": "구체적인 정책 분야별로 여론조사의 필요성을 평가합니다",
+      "order": 4
+    },
+    {
+      "id": "improvement_expectations",
+      "title": "🚀 5. 개선 방안 및 기대효과",
+      "description": "대규모 여론조사 도입 시 개선방안과 기대효과를 조사합니다",
+      "order": 5
+    }
+  ],
+  "questions": [
+    {
+      "id": "gender",
+      "sectionId": "demographics",
+      "order": 1,
+      "text": "귀하의 성별은 무엇입니까?",
+      "type": "radio",
+      "required": true,
+      "helpText": "통계 분석을 위한 정보입니다.",
+      "options": [
+        { "value": "male", "text": "남성", "order": 1 },
+        { "value": "female", "text": "여성", "order": 2 },
+        { "value": "other", "text": "기타", "order": 3 },
+        { "value": "prefer_not_to_say", "text": "응답하지 않음", "order": 4 }
+      ]
+    },
+    {
+      "id": "age",
+      "sectionId": "demographics",
+      "order": 2,
+      "text": "귀하의 연령대는 어떻게 됩니까?",
+      "type": "radio",
+      "required": true,
+      "options": [
+        { "value": "under_20", "text": "20세 미만", "order": 1 },
+        { "value": "20s", "text": "20-29세", "order": 2 },
+        { "value": "30s", "text": "30-39세", "order": 3 },
+        { "value": "40s", "text": "40-49세", "order": 4 },
+        { "value": "50s", "text": "50-59세", "order": 5 },
+        { "value": "60s", "text": "60-69세", "order": 6 },
+        { "value": "over_70", "text": "70세 이상", "order": 7 }
+      ]
+    },
+    {
+      "id": "location",
+      "sectionId": "demographics",
+      "order": 3,
+      "text": "귀하가 거주하고 계신 지역은 어디입니까?",
+      "type": "dropdown",
+      "required": true,
+      "helpText": "현재 주민등록상 주소지를 기준으로 선택해 주세요.",
+      "placeholder": "선택해 주세요",
+      "options": [
+        { "value": "jinan_eup", "text": "진안읍", "order": 1 },
+        { "value": "maryeong_myeon", "text": "마령면", "order": 2 },
+        { "value": "bugwi_myeon", "text": "부귀면", "order": 3 },
+        { "value": "sangjeon_myeon", "text": "상전면", "order": 4 },
+        { "value": "jochon_myeon", "text": "조촌면", "order": 5 },
+        { "value": "jucheon_myeon", "text": "주천면", "order": 6 },
+        { "value": "yongdam_myeon", "text": "용담면", "order": 7 },
+        { "value": "jeongcheon_myeon", "text": "정천면", "order": 8 },
+        { "value": "baekun_myeon", "text": "백운면", "order": 9 },
+        { "value": "seongsu_myeon", "text": "성수면", "order": 10 },
+        { "value": "ancheon_myeon", "text": "안천면", "order": 11 },
+        { "value": "donghyang_myeon", "text": "동향면", "order": 12 }
+      ]
+    },
+    {
+      "id": "occupation",
+      "sectionId": "demographics",
+      "order": 4,
+      "text": "귀하의 직업은 무엇입니까?",
+      "type": "radio",
+      "required": true,
+      "options": [
+        { "value": "agriculture", "text": "농업/축산업/임업", "order": 1 },
+        { "value": "self_employed", "text": "자영업/소상공인", "order": 2 },
+        { "value": "office_worker", "text": "회사원/공무원", "order": 3 },
+        { "value": "professional", "text": "전문직 (의료진, 교사, 변호사 등)", "order": 4 },
+        { "value": "housewife", "text": "주부", "order": 5 },
+        { "value": "student", "text": "학생", "order": 6 },
+        { "value": "unemployed", "text": "무직/은퇴", "order": 7 },
+        { "value": "other", "text": "기타", "order": 8 }
+      ]
+    },
+    {
+      "id": "policy_interest",
+      "sectionId": "policy_participation",
+      "order": 5,
+      "text": "평소 진안군의 행정정책에 대한 관심도는 어느 정도입니까?",
+      "type": "scale",
+      "required": true,
+      "scaleConfig": {
+        "min": 1,
+        "max": 5,
+        "labels": {
+          "1": "전혀<br>관심없음",
+          "2": "관심없음",
+          "3": "보통",
+          "4": "관심있음",
+          "5": "매우<br>관심있음"
+        }
+      }
+    },
+    {
+      "id": "participation_experience",
+      "sectionId": "policy_participation",
+      "order": 6,
+      "text": "최근 2년간 진안군 정책 수립 과정에 참여한 경험이 있습니까?",
+      "type": "checkbox",
+      "required": true,
+      "helpText": "해당되는 모든 항목을 선택해 주세요.",
+      "options": [
+        { "value": "town_meeting", "text": "주민설명회 참석", "order": 1 },
+        { "value": "public_hearing", "text": "공청회 참석", "order": 2 },
+        { "value": "online_opinion", "text": "온라인 의견 제출", "order": 3 },
+        { "value": "offline_opinion", "text": "전화/서면 의견 제출", "order": 4 },
+        { "value": "council_observation", "text": "군의회 방청", "order": 5 },
+        { "value": "resident_committee", "text": "주민자치위원회 활동", "order": 6 },
+        { "value": "village_meeting", "text": "마을회의 참석", "order": 7 },
+        { "value": "no_experience", "text": "참여 경험 없음", "order": 8 }
+      ]
+    },
+    {
+      "id": "info_source",
+      "sectionId": "policy_participation",
+      "order": 7,
+      "text": "주로 어떤 경로를 통해 진안군의 정책 정보를 얻으십니까?",
+      "type": "checkbox",
+      "required": true,
+      "helpText": "가장 많이 이용하는 순서대로 최대 3개까지 선택해 주세요.",
+      "options": [
+        { "value": "official_website", "text": "진안군 홈페이지", "order": 1 },
+        { "value": "social_media", "text": "진안군 소셜미디어 (페이스북, 인스타그램 등)", "order": 2 },
+        { "value": "local_media", "text": "지역 언론 (신문, 방송)", "order": 3 },
+        { "value": "village_broadcast", "text": "마을 방송", "order": 4 },
+        { "value": "word_of_mouth", "text": "이웃/지인을 통해", "order": 5 },
+        { "value": "offline_notice", "text": "현수막/게시판", "order": 6 },
+        { "value": "mobile_message", "text": "문자메시지/카카오톡", "order": 7 },
+        { "value": "rarely_access", "text": "정책정보를 거의 접하지 않음", "order": 8 }
+      ]
+    },
+    {
+      "id": "digital_skills",
+      "sectionId": "digital_perception",
+      "order": 8,
+      "text": "귀하의 스마트폰/컴퓨터 활용 능력은 어느 정도입니까?",
+      "type": "scale",
+      "required": true,
+      "scaleConfig": {
+        "min": 1,
+        "max": 5,
+        "labels": {
+          "1": "매우 서툼",
+          "2": "서툼",
+          "3": "보통",
+          "4": "능숙",
+          "5": "매우 능숙"
+        }
+      },
+      "conditionalLogic": {
+        "condition": "value < 3",
+        "showQuestion": "digital_support"
+      }
+    },
+    {
+      "id": "digital_support",
+      "sectionId": "digital_perception",
+      "order": 8.5,
+      "text": "스마트폰/컴퓨터 사용이 어려우시다면, 어떤 지원이 있으면 도움이 될까요?",
+      "type": "checkbox",
+      "required": false,
+      "helpText": "해당되는 모든 항목을 선택해 주세요.",
+      "conditional": true,
+      "showIf": {
+        "questionId": "digital_skills",
+        "condition": "value < 3"
+      },
+      "options": [
+        { "value": "family_help", "text": "가족/지인의 도움", "order": 1 },
+        { "value": "community_center", "text": "동네 지원센터", "order": 2 },
+        { "value": "phone_support", "text": "전화 상담 서비스", "order": 3 },
+        { "value": "home_education", "text": "방문 교육 서비스", "order": 4 },
+        { "value": "simple_manual", "text": "간단한 사용법 안내서", "order": 5 },
+        { "value": "no_help_needed", "text": "도움이 필요하지 않음", "order": 6 }
+      ]
+    },
+    {
+      "id": "online_survey_experience",
+      "sectionId": "digital_perception",
+      "order": 9,
+      "text": "온라인 설문조사에 참여해 본 경험이 있습니까?",
+      "type": "radio",
+      "required": true,
+      "options": [
+        { "value": "frequent", "text": "자주 참여한다 (월 1회 이상)", "order": 1 },
+        { "value": "sometimes", "text": "가끔 참여한다 (분기 1회 정도)", "order": 2 },
+        { "value": "rarely", "text": "거의 참여하지 않는다 (년 1-2회)", "order": 3 },
+        { "value": "never", "text": "참여해 본 적이 없다", "order": 4 }
+      ]
+    },
+    {
+      "id": "survey_necessity",
+      "sectionId": "digital_perception",
+      "order": 10,
+      "text": "진안군에서 중요한 정책을 결정할 때 많은 군민의 의견을 수렴하는 대규모 여론조사가 필요하다고 생각하십니까?",
+      "type": "scale",
+      "required": true,
+      "helpText": "1-2명이 아닌 수백-수천명 규모의 의견 수렴을 의미합니다.",
+      "scaleConfig": {
+        "min": 1,
+        "max": 5,
+        "labels": {
+          "1": "전혀<br>필요없음",
+          "2": "필요없음",
+          "3": "보통",
+          "4": "필요함",
+          "5": "매우<br>필요함"
+        }
+      }
+    },
+    {
+      "id": "survey_preference",
+      "sectionId": "digital_perception",
+      "order": 11,
+      "text": "여론조사 방식으로 어떤 것을 선호하십니까?",
+      "type": "radio",
+      "required": true,
+      "helpText": "각각의 장단점을 고려하여 선택해 주세요.",
+      "options": [
+        { "value": "digital_only", "text": "스마트폰/컴퓨터를 활용한 온라인 조사 (편리하고 빠름)", "order": 1 },
+        { "value": "offline_only", "text": "대면 조사 (설명회, 공청회 등)", "order": 2 },
+        { "value": "hybrid", "text": "온라인과 대면 조사를 병행", "order": 3 },
+        { "value": "phone", "text": "전화 조사", "order": 4 },
+        { "value": "mail", "text": "우편 조사", "order": 5 }
+      ]
+    },
+    {
+      "id": "digital_advantages",
+      "sectionId": "digital_perception",
+      "order": 12,
+      "text": "핸드폰/컴퓨터를 활용한 여론조사의 장점은 무엇이라고 생각하십니까?",
+      "type": "checkbox",
+      "required": true,
+      "helpText": "해당되는 모든 항목을 선택해 주세요.",
+      "options": [
+        { "value": "flexibility", "text": "시간과 장소에 구애받지 않음", "order": 1 },
+        { "value": "accessibility", "text": "더 많은 사람이 참여할 수 있음", "order": 2 },
+        { "value": "honest_opinion", "text": "솔직한 의견 표현 가능", "order": 3 },
+        { "value": "quick_results", "text": "빠른 결과 확인", "order": 4 },
+        { "value": "cost_effective", "text": "비용 절약", "order": 5 },
+        { "value": "eco_friendly", "text": "환경 친화적 (종이 사용 안함)", "order": 6 },
+        { "value": "youth_participation", "text": "젊은 세대 참여 증가", "order": 7 },
+        { "value": "easy_analysis", "text": "데이터 분석이 용이함", "order": 8 },
+        { "value": "no_advantage", "text": "장점이 없다고 생각함", "order": 9 }
+      ]
+    },
+    {
+      "id": "digital_concerns",
+      "sectionId": "digital_perception",
+      "order": 13,
+      "text": "핸드폰/컴퓨터를 활용한 여론조사에 대한 우려사항은 무엇입니까?",
+      "type": "checkbox",
+      "required": false,
+      "helpText": "우려되는 모든 항목을 선택해 주세요.",
+      "options": [
+        { "value": "privacy_concern", "text": "개인정보 보안 문제", "order": 1 },
+        { "value": "digital_divide", "text": "디지털 격차로 인한 참여 불평등", "order": 2 },
+        { "value": "manipulation_risk", "text": "인터넷 조작 가능성", "order": 3 },
+        { "value": "duplicate_participation", "text": "중복 참여 문제", "order": 4 },
+        { "value": "lack_discussion", "text": "깊이 있는 토론 부족", "order": 5 },
+        { "value": "elderly_difficulty", "text": "고령층 참여 어려움", "order": 6 },
+        { "value": "technical_issues", "text": "기술적 문제 발생 가능성", "order": 7 },
+        { "value": "no_concern", "text": "특별한 우려사항 없음", "order": 8 }
+      ]
+    },
+    {
+      "id": "policy_matrix",
+      "sectionId": "policy_necessity",
+      "order": 14,
+      "text": "다음 정책 분야별로 대규모 여론조사의 필요성을 평가해 주세요.",
+      "type": "matrix",
+      "required": true,
+      "helpText": "각 분야별로 여론조사가 얼마나 필요한지 평가해 주세요.",
+      "matrixConfig": {
+        "rows": [
+          { "id": "policy_agriculture", "text": "농업/축산업 정책" },
+          { "id": "policy_tourism", "text": "관광/문화 정책" },
+          { "id": "policy_transportation", "text": "교통/도로 정책" },
+          { "id": "policy_welfare", "text": "복지/보건 정책" },
+          { "id": "policy_education", "text": "교육/청소년 정책" },
+          { "id": "policy_environment", "text": "환경/에너지 정책" },
+          { "id": "policy_economy", "text": "경제/일자리 정책" },
+          { "id": "policy_safety", "text": "안전/재난 정책" },
+          { "id": "policy_housing", "text": "주택/도시계획" },
+          { "id": "policy_budget", "text": "예산 편성" }
+        ],
+        "columns": [
+          { "value": "1", "text": "매우<br>불필요" },
+          { "value": "2", "text": "불필요" },
+          { "value": "3", "text": "보통" },
+          { "value": "4", "text": "필요" },
+          { "value": "5", "text": "매우<br>필요" }
+        ]
+      }
+    },
+    {
+      "id": "participation_methods",
+      "sectionId": "improvement_expectations",
+      "order": 15,
+      "text": "더 많은 군민이 디지털 여론조사에 참여하도록 하려면 어떤 방안이 필요합니까?",
+      "type": "checkbox",
+      "required": true,
+      "helpText": "효과적이라고 생각하는 모든 방안을 선택해 주세요.",
+      "options": [
+        { "value": "incentives", "text": "참여자 인센티브 제공 (상품권, 추첨 등)", "order": 1 },
+        { "value": "education_program", "text": "사용법 교육 프로그램 운영", "order": 2 },
+        { "value": "simple_interface", "text": "간단하고 직관적인 설문 시스템", "order": 3 },
+        { "value": "diverse_promotion", "text": "다양한 홍보 채널 활용", "order": 4 },
+        { "value": "leader_encouragement", "text": "지역 리더들의 적극적 참여 독려", "order": 5 },
+        { "value": "offline_support", "text": "오프라인 지원센터 운영", "order": 6 },
+        { "value": "mobile_app", "text": "모바일 앱 개발", "order": 7 },
+        { "value": "result_feedback", "text": "결과 공개 및 정책 반영 내용 안내", "order": 8 }
+      ]
+    },
+    {
+      "id": "expected_effect",
+      "sectionId": "improvement_expectations",
+      "order": 16,
+      "text": "대규모 디지털 여론조사 도입이 진안군 행정에 긍정적 영향을 줄 것이라고 생각하십니까?",
+      "type": "scale",
+      "required": true,
+      "scaleConfig": {
+        "min": 1,
+        "max": 5,
+        "labels": {
+          "1": "전혀 그렇지<br>않다",
+          "2": "그렇지<br>않다",
+          "3": "보통이다",
+          "4": "그렇다",
+          "5": "매우<br>그렇다"
+        }
+      }
+    },
+    {
+      "id": "priority_area",
+      "sectionId": "improvement_expectations",
+      "order": 17,
+      "text": "대규모 여론조사를 가장 우선적으로 도입해야 할 정책 분야는 무엇이라고 생각하십니까?",
+      "type": "radio",
+      "required": true,
+      "helpText": "가장 시급하다고 생각하는 한 분야를 선택해 주세요.",
+      "options": [
+        { "value": "agriculture_policy", "text": "농업/축산업 정책", "order": 1 },
+        { "value": "tourism_culture", "text": "관광/문화 정책", "order": 2 },
+        { "value": "transportation", "text": "교통/도로 정책", "order": 3 },
+        { "value": "welfare_health", "text": "복지/보건 정책", "order": 4 },
+        { "value": "education_youth", "text": "교육/청소년 정책", "order": 5 },
+        { "value": "environment_energy", "text": "환경/에너지 정책", "order": 6 },
+        { "value": "economy_jobs", "text": "경제/일자리 정책", "order": 7 },
+        { "value": "budget_planning", "text": "예산 편성", "order": 8 }
+      ]
+    },
+    {
+      "id": "additional_comments",
+      "sectionId": "improvement_expectations",
+      "order": 18,
+      "text": "진안군의 디지털 여론조사 도입에 대한 추가 의견이나 제안사항이 있으시면 자유롭게 작성해 주세요.",
+      "type": "textarea",
+      "required": false,
+      "helpText": "건설적인 의견과 제안을 환영합니다.",
+      "placeholder": "예: 특정 연령층을 위한 지원 방안, 기술적 개선사항, 운영 방식 제안 등",
+      "rows": 5
+    }
+  ]
+}

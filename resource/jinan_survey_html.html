@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>진안군 설문조사</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e3a5f 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23pattern)"/></svg>');
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .survey-info {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .survey-info div {
+            display: inline-block;
+            margin: 0 15px;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .welcome-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #2c5aa0;
+        }
+
+        .welcome-section h2 {
+            color: #2c5aa0;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .welcome-section p {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .section {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            border-color: #2c5aa0;
+            box-shadow: 0 5px 15px rgba(44, 90, 160, 0.1);
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #2c5aa0, #1e3a5f);
+            color: white;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .section-content {
+            padding: 25px;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #2c5aa0;
+        }
+
+        .question.conditional {
+            display: none;
+            border-left-color: #ffc107;
+            background: #fff8e1;
+        }
+
+        .question-label {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .required {
+            color: #dc3545;
+            margin-left: 5px;
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #2c5aa0;
+            box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+        }
+
+        .radio-group, .checkbox-group {
+            display: grid;
+            gap: 12px;
+        }
+
+        .radio-item, .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-item:hover, .checkbox-item:hover {
+            border-color: #2c5aa0;
+            background: #f8f9fa;
+        }
+
+        .radio-item input, .checkbox-item input {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        .scale-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .scale-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .scale-radio {
+            width: 20px;
+            height: 20px;
+            margin-bottom: 8px;
+        }
+
+        .scale-label {
+            font-size: 12px;
+            text-align: center;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .matrix-table th {
+            background: #2c5aa0;
+            color: white;
+            padding: 15px 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .matrix-table td {
+            padding: 15px 10px;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .matrix-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .matrix-table tr:hover {
+            background: #e3f2fd;
+        }
+
+        .matrix-row-label {
+            text-align: left !important;
+            font-weight: 500;
+            color: #333;
+            background: #f8f9fa !important;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2c5aa0, #667eea);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2c5aa0, #1e3a5f);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 90, 160, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .thank-you {
+            display: none;
+            text-align: center;
+            padding: 60px 30px;
+        }
+
+        .thank-you h2 {
+            color: #2c5aa0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .thank-you p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .check-icon {
+            width: 80px;
+            height: 80px;
+            background: #28a745;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: white;
+            animation: checkmark 0.6s ease-in-out;
+        }
+
+        @keyframes checkmark {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .footer {
+            background: #2c5aa0;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+
+            .header, .content {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .survey-info div {
+                display: block;
+                margin: 5px 0;
+            }
+
+            .scale-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .scale-item {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 10px;
+                background: white;
+                border-radius: 5px;
+                border: 1px solid #ddd;
+            }
+
+            .matrix-table {
+                font-size: 12px;
+            }
+
+            .matrix-table th, .matrix-table td {
+                padding: 8px 5px;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .question.error .form-control {
+            border-color: #dc3545;
+        }
+
+        .question.error .error-message {
+            display: block;
+        }
+
+        .error {
+            border-color: #dc3545 !important;
+            background: #ffe6e6 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="loading" id="loading">
+            설문조사를 불러오는 중...
+        </div>
+
+        <div id="surveyContainer" style="display: none;">
+            <div class="header">
+                <div class="header-content">
+                    <div class="logo">진안</div>
+                    <h1 id="surveyTitle">설문조사</h1>
+                    <p id="surveyDescription">설문조사 설명</p>
+                    <div class="survey-info" id="surveyInfo">
+                        <!-- 동적으로 생성 -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="welcome-section" id="welcomeSection">
+                    <!-- 동적으로 생성 -->
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <form id="surveyForm">
+                    <div id="sectionsContainer">
+                        <!-- 동적으로 생성 -->
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">초기화</button>
+                        <button type="submit" class="btn btn-primary">설문 제출</button>
+                    </div>
+                </form>
+
+                <div class="thank-you" id="thankYou">
+                    <div class="check-icon">✓</div>
+                    <div id="thankYouContent">
+                        <!-- 동적으로 생성 -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                © 2025 진안군청. 모든 권리 보유. | 문의: 063-430-8000 | 개인정보처리방침
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let surveyData = null;
+        let conditionalQuestions = {};
+
+        // JSON 데이터 로드
+        async function loadSurveyData() {
+            try {
+                // 실제 환경에서는 서버에서 데이터를 가져옴
+                // const response = await fetch('survey-data.json');
+                // const data = await response.json();
+                
+                // 데모를 위해 샘플 데이터 사용 (실제로는 위의 fetch 코드 사용)
+                const data = await getSampleData();
+                surveyData = data;
+                
+                buildSurvey(data);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('surveyContainer').style.display = 'block';
+                
+                initializeEventListeners();
+            } catch (error) {
+                console.error('설문 데이터 로드 실패:', error);
+                document.getElementById('loading').innerHTML = '설문 데이터를 불러올 수 없습니다.';
+            }
+        }
+
+        // 설문조사 UI 구성
+        function buildSurvey(data) {
+            // 헤더 정보 설정
+            document.getElementById('surveyTitle').textContent = data.survey.title;
+            document.getElementById('surveyDescription').textContent = data.survey.description;
+            
+            // 설문 정보 생성
+            const surveyInfo = document.getElementById('surveyInfo');
+            surveyInfo.innerHTML = `
+                <div>📅 조사기간: ${data.survey.period.start} ~ ${data.survey.period.end}</div>
+                <div>⏱️ 소요시간: 약 ${data.survey.estimatedTime}분</div>
+                <div>🎯 목표 응답: ${data.survey.maxResponses.toLocaleString()}명</div>
+            `;
+
+            // 환영 메시지 생성
+            const welcomeSection = document.getElementById('welcomeSection');
+            const welcome = data.survey.welcomeMessage;
+            welcomeSection.innerHTML = `
+                <h2>${welcome.title}</h2>
+                ${welcome.content.map(p => `<p>${p}</p>`).join('')}
+            `;
+
+            // 감사 메시지 생성
+            const thankYouContent = document.getElementById('thankYouContent');
+            const thankYou = data.survey.thankYouMessage;
+            thankYouContent.innerHTML = `
+                <h2>${thankYou.title}</h2>
+                ${thankYou.content.map(p => `<p><strong>${p}</strong></p>`).join('')}
+            `;
+
+            // 섹션과 질문 생성
+            buildSections(data);
+        }
+
+        // 섹션 구성
+        function buildSections(data) {
+            const sectionsContainer = document.getElementById('sectionsContainer');
+            const sections = data.sections.sort((a, b) => a.order - b.order);
+            
+            sections.forEach(section => {
+                const sectionElement = createSectionElement(section, data.questions);
+                sectionsContainer.appendChild(sectionElement);
+            });
+        }
+
+        // 섹션 요소 생성
+        function createSectionElement(section, questions) {
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'section';
+            sectionDiv.innerHTML = `
+                <div class="section-header">
+                    ${section.title} (${section.description})
+                </div>
+                <div class="section-content" id="section-${section.id}">
+                </div>
+            `;
+
+            const sectionContent = sectionDiv.querySelector('.section-content');
+            const sectionQuestions = questions
+                .filter(q => q.sectionId === section.id)
+                .sort((a, b) => a.order - b.order);
+
+            sectionQuestions.forEach(question => {
+                const questionElement = createQuestionElement(question);
+                sectionContent.appendChild(questionElement);
+            });
+
+            return sectionDiv;
+        }
+
+        // 질문 요소 생성
+        function createQuestionElement(question) {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = `question ${question.conditional ? 'conditional' : ''}`;
+            questionDiv.id = `question-${question.id}`;
+            questionDiv.dataset.required = question.required;
+            questionDiv.dataset.questionId = question.id;
+
+            let questionHTML = `
+                <div class="question-label">
+                    ${question.order}. ${question.text}
+                    ${question.required ? '<span class="required">*</span>' : ''}
+                </div>
+            `;
+
+            if (question.helpText) {
+                questionHTML += `<div class="help-text">${question.helpText}</div>`;
+            }
+
+            // 질문 타입에 따른 입력 요소 생성
+            switch (question.type) {
+                case 'radio':
+                    questionHTML += createRadioGroup(question);
+                    break;
+                case 'checkbox':
+                    questionHTML += createCheckboxGroup(question);
+                    break;
+                case 'dropdown':
+                    questionHTML += createDropdown(question);
+                    break;
+                case 'scale':
+                    questionHTML += createScale(question);
+                    break;
+                case 'matrix':
+                    questionHTML += createMatrix(question);
+                    break;
+                case 'textarea':
+                    questionHTML += createTextarea(question);
+                    break;
+                default:
+                    questionHTML += createTextInput(question);
+            }
+
+            questionHTML += '<div class="error-message">이 항목을 입력해 주세요.</div>';
+            questionDiv.innerHTML = questionHTML;
+
+            // 조건부 로직 설정
+            if (question.conditionalLogic) {
+                conditionalQuestions[question.id] = question.conditionalLogic;
+            }
+
+            return questionDiv;
+        }
+
+        // 라디오 그룹 생성
+        function createRadioGroup(question) {
+            const options = question.options.sort((a, b) => a.order - b.order);
+            return `
+                <div class="radio-group">
+                    ${options.map(option => `
+                        <label class="radio-item">
+                            <input type="radio" name="${question.id}" value="${option.value}" ${question.required ? 'required' : ''}>
+                            ${option.text}
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // 체크박스 그룹 생성
+        function createCheckboxGroup(question) {
+            const options = question.options.sort((a, b) => a.order - b.order);
+            return `
+                <div class="checkbox-group">
+                    ${options.map(option => `
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="${question.id}" value="${option.value}">
+                            ${option.text}
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // 드롭다운 생성
+        function createDropdown(question) {
+            const options = question.options.sort((a, b) => a.order - b.order);
+            return `
+                <select name="${question.id}" class="form-control" ${question.required ? 'required' : ''}>
+                    <option value="">${question.placeholder || '선택해 주세요'}</option>
+                    ${options.map(option => `
+                        <option value="${option.value}">${option.text}</option>
+                    `).join('')}
+                </select>
+            `;
+        }
+
+        // 척도 생성
+        function createScale(question) {
+            const config = question.scaleConfig;
+            let scaleHTML = '<div class="scale-container">';
+            
+            for (let i = config.min; i <= config.max; i++) {
+                scaleHTML += `
+                    <div class="scale-item">
+                        <input type="radio" name="${question.id}" value="${i}" class="scale-radio" ${question.required ? 'required' : ''}>
+                        <div class="scale-label">${config.labels[i] || i}</div>
+                    </div>
+                `;
+            }
+            
+            scaleHTML += '</div>';
+            return scaleHTML;
+        }
+
+        // 매트릭스 생성
+        function createMatrix(question) {
+            const config = question.matrixConfig;
+            let matrixHTML = `
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th>정책 분야</th>
+                            ${config.columns.map(col => `<th>${col.text}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            config.rows.forEach(row => {
+                matrixHTML += `
+                    <tr>
+                        <td class="matrix-row-label">${row.text}</td>
+                        ${config.columns.map(col => `
+                            <td><input type="radio" name="${row.id}" value="${col.value}" ${question.required ? 'required' : ''}></td>
+                        `).join('')}
+                    </tr>
+                `;
+            });
+
+            matrixHTML += '</tbody></table>';
+            return matrixHTML;
+        }
+
+        // 텍스트 영역 생성
+        function createTextarea(question) {
+            return `
+                <textarea 
+                    name="${question.id}" 
+                    class="form-control" 
+                    rows="${question.rows || 4}"
+                    placeholder="${question.placeholder || ''}"
+                    ${question.required ? 'required' : ''}
+                ></textarea>
+            `;
+        }
+
+        // 텍스트 입력 생성
+        function createTextInput(question) {
+            return `
+                <input 
+                    type="text" 
+                    name="${question.id}" 
+                    class="form-control"
+                    placeholder="${question.placeholder || ''}"
+                    ${question.required ? 'required' : ''}
+                >
+            `;
+        }
+
+        // 이벤트 리스너 초기화
+        function initializeEventListeners() {
+            const form = document.getElementById('surveyForm');
+            
+            // 진행률 업데이트
+            form.addEventListener('change', updateProgress);
+            form.addEventListener('input', updateProgress);
+
+            // 조건부 로직 처리
+            form.addEventListener('change', handleConditionalLogic);
+
+            // 폼 제출
+            form.addEventListener('submit', handleFormSubmit);
+
+            // 초기 진행률 업데이트
+            updateProgress();
+        }
+
+        // 조건부 로직 처리
+        function handleConditionalLogic(event) {
+            const questionId = event.target.name;
+            const value = event.target.value;
+
+            // digital_skills 질문의 조건부 로직
+            if (questionId === 'digital_skills') {
+                const digitalSupportQuestion = document.getElementById('question-digital_support');
+                if (digitalSupportQuestion) {
+                    if (parseInt(value) < 3) {
+                        digitalSupportQuestion.style.display = 'block';
+                    } else {
+                        digitalSupportQuestion.style.display = 'none';
+                    }
+                }
+            }
+        }
+
+        // 진행률 업데이트
+        function updateProgress() {
+            const form = document.getElementById('surveyForm');
+            const allQuestions = surveyData.questions.filter(q => !q.conditional);
+            const requiredQuestions = allQuestions.filter(q => q.required);
+            
+            let completedCount = 0;
+            
+            requiredQuestions.forEach(question => {
+                const inputs = form.querySelectorAll(`[name="${question.id}"]`);
+                let isCompleted = false;
+
+                if (question.type === 'radio' || question.type === 'scale') {
+                    isCompleted = Array.from(inputs).some(input => input.checked);
+                } else if (question.type === 'checkbox') {
+                    isCompleted = Array.from(inputs).some(input => input.checked);
+                } else if (question.type === 'matrix') {
+                    const matrixRows = question.matrixConfig.rows;
+                    isCompleted = matrixRows.every(row => {
+                        const rowInputs = form.querySelectorAll(`[name="${row.id}"]`);
+                        return Array.from(rowInputs).some(input => input.checked);
+                    });
+                } else {
+                    isCompleted = inputs[0] && inputs[0].value.trim() !== '';
+                }
+
+                if (isCompleted) completedCount++;
+            });
+
+            const progress = (completedCount / requiredQuestions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // 폼 검증
+        function validateForm() {
+            const form = document.getElementById('surveyForm');
+            let isValid = true;
+
+            // 모든 오류 스타일 제거
+            document.querySelectorAll('.question.error').forEach(q => q.classList.remove('error'));
+
+            surveyData.questions.forEach(question => {
+                if (!question.required || question.conditional) return;
+
+                const questionDiv = document.getElementById(`question-${question.id}`);
+                if (!questionDiv || questionDiv.style.display === 'none') return;
+
+                let isQuestionValid = true;
+
+                if (question.type === 'radio' || question.type === 'scale') {
+                    const inputs = form.querySelectorAll(`[name="${question.id}"]`);
+                    isQuestionValid = Array.from(inputs).some(input => input.checked);
+                } else if (question.type === 'checkbox') {
+                    const inputs = form.querySelectorAll(`[name="${question.id}"]`);
+                    isQuestionValid = Array.from(inputs).some(input => input.checked);
+                } else if (question.type === 'matrix') {
+                    const matrixRows = question.matrixConfig.rows;
+                    isQuestionValid = matrixRows.every(row => {
+                        const rowInputs = form.querySelectorAll(`[name="${row.id}"]`);
+                        return Array.from(rowInputs).some(input => input.checked);
+                    });
+                } else {
+                    const input = form.querySelector(`[name="${question.id}"]`);
+                    isQuestionValid = input && input.value.trim() !== '';
+                }
+
+                if (!isQuestionValid) {
+                    questionDiv.classList.add('error');
+                    isValid = false;
+                }
+            });
+
+            return isValid;
+        }
+
+        // 폼 제출 처리
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            if (!validateForm()) {
+                alert('필수 항목을 모두 입력해 주세요.');
+                const firstError = document.querySelector('.question.error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+
+            // 데이터 수집
+            const formData = new FormData(event.target);
+            const responseData = {};
+
+            // 일반 필드 처리
+            for (let [key, value] of formData.entries()) {
+                if (responseData[key]) {
+                    if (Array.isArray(responseData[key])) {
+                        responseData[key].push(value);
+                    } else {
+                        responseData[key] = [responseData[key], value];
+                    }
+                } else {
+                    responseData[key] = value;
+                }
+            }
+
+            // 체크박스 그룹 처리
+            const checkboxQuestions = surveyData.questions.filter(q => q.type === 'checkbox');
+            checkboxQuestions.forEach(question => {
+                const checked = Array.from(document.querySelectorAll(`input[name="${question.id}"]:checked`))
+                    .map(cb => cb.value);
+                responseData[question.id] = checked;
+            });
+
+            console.log('설문 응답 데이터:', responseData);
+
+            // 성공 화면 표시
+            document.querySelector('.content').style.display = 'none';
+            document.getElementById('thankYou').style.display = 'block';
+
+            // 실제 환경에서는 서버로 데이터 전송
+            // submitToServer(responseData);
+        }
+
+        // 폼 초기화
+        function resetForm() {
+            if (confirm('모든 입력 내용이 삭제됩니다. 계속하시겠습니까?')) {
+                document.getElementById('surveyForm').reset();
+                document.querySelectorAll('.question.error').forEach(q => q.classList.remove('error'));
+                document.querySelectorAll('.question.conditional').forEach(q => q.style.display = 'none');
+                updateProgress();
+            }
+        }
+
+        // 서버로 데이터 전송
+        async function submitToServer(responseData) {
+            try {
+                const response = await fetch('/api/surveys/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        surveyId: surveyData.survey.id,
+                        responses: responseData,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('서버 전송 실패');
+                }
+
+                const result = await response.json();
+                console.log('서버 응답:', result);
+            } catch (error) {
+                console.error('데이터 전송 오류:', error);
+                alert('응답 전송 중 오류가 발생했습니다. 다시 시도해 주세요.');
+            }
+        }
+
+        // 페이지 로드 시 실행
+        document.addEventListener('DOMContentLoaded', loadSurveyData);
+
+        // 샘플 데이터 (실제로는 survey-data.json에서 로드)
+        async function getSampleData() {
+            // 실제 구현에서는 이 함수를 제거하고 아래 코드를 사용:
+            // const response = await fetch('survey-data.json');
+            // return await response.json();
+            
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve({
+                        "survey": {
+                            "id": "jinan-policy-survey-2025",
+                            "title": "진안군 행정정책 입안 시 대규모 여론조사 필요성 조사",
+                            "description": "진안군에서 행정정책을 수립할 때 핸드폰이나 컴퓨터를 활용한 대규모 여론조사의 필요성과 효과성에 대한 군민 의견을 수렴하는 설문조사입니다.",
+                            "estimatedTime": 7,
+                            "maxResponses": 10000,
+                            "period": {
+                                "start": "2025.07.21",
+                                "end": "2025.08.20"
+                            },
+                            "welcomeMessage": {
+                                "title": "안녕하세요, 진안군입니다.",
+                                "content": [
+                                    "본 설문조사는 진안군의 행정정책 수립 과정에서 디지털 기반 여론조사 도입에 대한 군민 여러분의 소중한 의견을 듣고자 실시됩니다.",
+                                    "여러분의 참여가 더 나은 진안군을 만드는 데 큰 도움이 됩니다.",
+                                    "※ 모든 응답은 통계 목적으로만 사용되며, 개인정보는 철저히 보호됩니다."
+                                ]
+                            },
+                            "thankYouMessage": {
+                                "title": "설문조사 완료",
+                                "content": [
+                                    "설문조사에 참여해 주셔서 감사합니다.",
+                                    "여러분의 소중한 의견은 진안군의 정책 수립에 반영될 예정입니다.",
+                                    "더 나은 진안군을 위해 함께해 주세요!"
+                                ]
+                            }
+                        },
+                        "sections": [
+                            {
+                                "id": "demographics",
+                                "title": "📝 1. 응답자 기본정보",
+                                "description": "통계 분석을 위한 기본적인 정보를 수집합니다",
+                                "order": 1
+                            },
+                            {
+                                "id": "policy_participation",
+                                "title": "🏛️ 2. 현재 정책 참여 현황",
+                                "description": "진안군 정책에 대한 현재 참여도와 관심도를 조사합니다",
+                                "order": 2
+                            },
+                            {
+                                "id": "digital_perception",
+                                "title": "💻 3. 디지털 여론조사에 대한 인식",
+                                "description": "핸드폰/컴퓨터를 활용한 여론조사에 대한 생각을 조사합니다",
+                                "order": 3
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "id": "gender",
+                                "sectionId": "demographics",
+                                "order": 1,
+                                "text": "귀하의 성별은 무엇입니까?",
+                                "type": "radio",
+                                "required": true,
+                                "helpText": "통계 분석을 위한 정보입니다.",
+                                "options": [
+                                    { "value": "male", "text": "남성", "order": 1 },
+                                    { "value": "female", "text": "여성", "order": 2 },
+                                    { "value": "other", "text": "기타", "order": 3 },
+                                    { "value": "prefer_not_to_say", "text": "응답하지 않음", "order": 4 }
+                                ]
+                            },
+                            {
+                                "id": "age",
+                                "sectionId": "demographics",
+                                "order": 2,
+                                "text": "귀하의 연령대는 어떻게 됩니까?",
+                                "type": "radio",
+                                "required": true,
+                                "options": [
+                                    { "value": "under_20", "text": "20세 미만", "order": 1 },
+                                    { "value": "20s", "text": "20-29세", "order": 2 },
+                                    { "value": "30s", "text": "30-39세", "order": 3 },
+                                    { "value": "40s", "text": "40-49세", "order": 4 },
+                                    { "value": "50s", "text": "50-59세", "order": 5 },
+                                    { "value": "60s", "text": "60-69세", "order": 6 },
+                                    { "value": "over_70", "text": "70세 이상", "order": 7 }
+                                ]
+                            },
+                            {
+                                "id": "digital_skills",
+                                "sectionId": "digital_perception",
+                                "order": 8,
+                                "text": "귀하의 스마트폰/컴퓨터 활용 능력은 어느 정도입니까?",
+                                "type": "scale",
+                                "required": true,
+                                "scaleConfig": {
+                                    "min": 1,
+                                    "max": 5,
+                                    "labels": {
+                                        "1": "매우 서툼",
+                                        "2": "서툼",
+                                        "3": "보통",
+                                        "4": "능숙",
+                                        "5": "매우 능숙"
+                                    }
+                                }
+                            },
+                            {
+                                "id": "digital_support",
+                                "sectionId": "digital_perception",
+                                "order": 8.5,
+                                "text": "스마트폰/컴퓨터 사용이 어려우시다면, 어떤 지원이 있으면 도움이 될까요?",
+                                "type": "checkbox",
+                                "required": false,
+                                "helpText": "해당되는 모든 항목을 선택해 주세요.",
+                                "conditional": true,
+                                "options": [
+                                    { "value": "family_help", "text": "가족/지인의 도움", "order": 1 },
+                                    { "value": "community_center", "text": "동네 지원센터", "order": 2 },
+                                    { "value": "phone_support", "text": "전화 상담 서비스", "order": 3 },
+                                    { "value": "home_education", "text": "방문 교육 서비스", "order": 4 },
+                                    { "value": "simple_manual", "text": "간단한 사용법 안내서", "order": 5 },
+                                    { "value": "no_help_needed", "text": "도움이 필요하지 않음", "order": 6 }
+                                ]
+                            }
+                        ]
+                    });
+                }, 1000);
+            });
+        }
