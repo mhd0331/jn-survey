@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="진안군 설문조사 결과 대시보드">
+    <meta name="theme-color" content="#2c5aa0">
+    
+    <title>진안군 설문조사 결과 - 대시보드</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="results.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="results-container">
+        <!-- 헤더 -->
+        <header class="results-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <svg width="40" height="40" viewBox="0 0 192 192" fill="none">
+                        <rect width="192" height="192" fill="#f8f9fa"/>
+                        <path d="M120.5 45L115 50.5L107.5 58L100 65.5V80L97.5 82.5L95 85L92.5 87.5L90 90L87.5 92.5L85 95L82.5 97.5L80 100L77.5 102.5L75 105L70.5 109.5L68 112L65.5 114.5L63 117L60.5 119.5L58 122L55.5 124.5L53 127L50 130L47.5 132.5L45 135L40 140L37.5 142.5L35 145L30 150" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+                        <path d="M30 150C40 155 55 158 75 155C95 152 110 145 120 140" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+                        <path d="M100.5 65.5L120.5 45L125 49.5L105 70" fill="#ffffff"/>
+                        <path d="M95 85L100 80L105 85L100 90" fill="#ffffff"/>
+                    </svg>
+                    <h1>설문조사 결과 대시보드</h1>
+                </div>
+                <div class="header-right">
+                    <button class="btn-export" onclick="exportData('excel')">
+                        <span>📊</span> Excel 다운로드
+                    </button>
+                    <button class="btn-export" onclick="exportData('pdf')">
+                        <span>📄</span> PDF 보고서
+                    </button>
+                    <button class="btn-refresh" onclick="loadResults()">
+                        <span>🔄</span> 새로고침
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 요약 카드 -->
+        <section class="summary-cards">
+            <div class="summary-card">
+                <div class="card-icon">👥</div>
+                <div class="card-content">
+                    <h3>전체 응답자</h3>
+                    <p class="card-value" id="totalResponses">0</p>
+                    <p class="card-subtitle">명</p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="card-icon">📈</div>
+                <div class="card-content">
+                    <h3>응답률</h3>
+                    <p class="card-value" id="responseRate">0</p>
+                    <p class="card-subtitle">%</p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="card-icon">⏱️</div>
+                <div class="card-content">
+                    <h3>평균 소요시간</h3>
+                    <p class="card-value" id="avgTime">0</p>
+                    <p class="card-subtitle">분</p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="card-icon">📅</div>
+                <div class="card-content">
+                    <h3>수집 기간</h3>
+                    <p class="card-value" id="collectionDays">0</p>
+                    <p class="card-subtitle">일</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 필터 섹션 -->
+        <section class="filter-section">
+            <h2>📊 결과 필터링</h2>
+            <div class="filter-controls">
+                <select id="filterAge" class="filter-select">
+                    <option value="">전체 연령</option>
+                    <option value="under_20">20세 미만</option>
+                    <option value="20s">20-29세</option>
+                    <option value="30s">30-39세</option>
+                    <option value="40s">40-49세</option>
+                    <option value="50s">50-59세</option>
+                    <option value="60s">60-69세</option>
+                    <option value="over_70">70세 이상</option>
+                </select>
+                <select id="filterGender" class="filter-select">
+                    <option value="">전체 성별</option>
+                    <option value="male">남성</option>
+                    <option value="female">여성</option>
+                    <option value="other">기타</option>
+                </select>
+                <select id="filterLocation" class="filter-select">
+                    <option value="">전체 지역</option>
+                    <option value="jinan_eup">진안읍</option>
+                    <option value="maryeong_myeon">마령면</option>
+                    <option value="bugwi_myeon">부귀면</option>
+                    <option value="sangjeon_myeon">상전면</option>
+                    <option value="jochon_myeon">조촌면</option>
+                    <option value="jucheon_myeon">주천면</option>
+                    <option value="yongdam_myeon">용담면</option>
+                    <option value="jeongcheon_myeon">정천면</option>
+                    <option value="baekun_myeon">백운면</option>
+                    <option value="seongsu_myeon">성수면</option>
+                    <option value="ancheon_myeon">안천면</option>
+                    <option value="donghyang_myeon">동향면</option>
+                </select>
+                <button class="btn-apply-filter" onclick="applyFilters()">필터 적용</button>
+                <button class="btn-reset-filter" onclick="resetFilters()">초기화</button>
+            </div>
+        </section>
+
+        <!-- 결과 섹션들 -->
+        <div class="results-sections">
+            <!-- 1. 응답자 기본정보 -->
+            <section class="result-section">
+                <h2>📝 1. 응답자 기본정보</h2>
+                
+                <div class="chart-grid">
+                    <div class="chart-container">
+                        <h3>성별 분포</h3>
+                        <canvas id="genderChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>연령대 분포</h3>
+                        <canvas id="ageChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>거주 지역 분포</h3>
+                        <canvas id="locationChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>직업 분포</h3>
+                        <canvas id="occupationChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. 정책 참여 현황 -->
+            <section class="result-section">
+                <h2>🏛️ 2. 현재 정책 참여 현황</h2>
+                
+                <div class="chart-grid">
+                    <div class="chart-container">
+                        <h3>정책 관심도</h3>
+                        <canvas id="interestChart"></canvas>
+                    </div>
+                    <div class="chart-container wide">
+                        <h3>정책 참여 경험</h3>
+                        <canvas id="participationChart"></canvas>
+                    </div>
+                    <div class="chart-container wide">
+                        <h3>정보 획득 경로</h3>
+                        <canvas id="infoSourceChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. 디지털 여론조사 인식 -->
+            <section class="result-section">
+                <h2>💻 3. 디지털 여론조사에 대한 인식</h2>
+                
+                <div class="chart-grid">
+                    <div class="chart-container">
+                        <h3>디지털 활용 능력</h3>
+                        <canvas id="digitalSkillsChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>온라인 설문 경험</h3>
+                        <canvas id="surveyExperienceChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>여론조사 필요성</h3>
+                        <canvas id="necessityChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>선호 조사 방식</h3>
+                        <canvas id="preferenceChart"></canvas>
+                    </div>
+                    <div class="chart-container wide">
+                        <h3>디지털 조사의 장점</h3>
+                        <canvas id="advantagesChart"></canvas>
+                    </div>
+                    <div class="chart-container wide">
+                        <h3>디지털 조사의 우려사항</h3>
+                        <canvas id="concernsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="insights-box">
+                    <h3>📊 주요 인사이트</h3>
+                    <ul id="digitalInsights">
+                        <li>로딩 중...</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 4. 개선 방안 및 기대효과 -->
+            <section class="result-section">
+                <h2>🚀 4. 개선 방안 및 기대효과</h2>
+                
+                <div class="chart-grid">
+                    <div class="chart-container wide">
+                        <h3>참여 촉진 방안</h3>
+                        <canvas id="methodsChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>기대 효과</h3>
+                        <canvas id="effectChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>우선 도입 분야</h3>
+                        <canvas id="priorityChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 주관식 응답 분석 -->
+                <div class="comments-section">
+                    <h3>💬 주요 의견 및 제안사항</h3>
+                    <div class="comments-analysis">
+                        <div class="word-cloud" id="wordCloud">
+                            <!-- 워드 클라우드 -->
+                        </div>
+                        <div class="top-comments">
+                            <h4>대표 의견</h4>
+                            <div id="topComments">
+                                <!-- 주요 의견들 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 푸터 -->
+        <footer class="results-footer">
+            <p>© 2025 진안군청. 모든 권리 보유.</p>
+            <p>최종 업데이트: <span id="lastUpdate"></span></p>
+        </footer>
+    </div>
+
+    <!-- 로딩 화면 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>데이터를 불러오는 중...</p>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="results.js"></script>
+</body>
+</html>

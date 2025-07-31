@@ -5,7 +5,7 @@ let responses = {};
 
 // DOM 로드 완료 시 실행
 document.addEventListener('DOMContentLoaded', async () => {
-    // Service Worker 등록 (프로덕션 환경에서만)
+    // Service Worker 등록 (HTTPS 환경에서만)
     if (window.location.protocol === 'https:') {
         registerServiceWorker();
     }
@@ -36,7 +36,7 @@ async function registerServiceWorker() {
             const registration = await navigator.serviceWorker.register('./sw.js');
             console.log('Service Worker 등록 성공');
         } catch (error) {
-            console.log('Service Worker 등록 건너뜀:', error.message);
+            console.log('Service Worker 등록 실패:', error.message);
         }
     }
 }
@@ -69,7 +69,7 @@ function setupOfflineDetection() {
     const offlineNotice = document.getElementById('offlineNotice');
     
     function checkNetworkStatus() {
-        if (!navigator.onLine && window.location.protocol !== 'file:') {
+        if (!navigator.onLine) {
             offlineNotice.classList.add('show');
         } else {
             offlineNotice.classList.remove('show');
@@ -92,12 +92,11 @@ function setupOfflineDetection() {
 // 설문 데이터 로드
 async function loadSurveyData() {
     try {
-        // data.json 파일 로드 시도
         const response = await fetch('./data.json');
         
         if (response.ok) {
             surveyData = await response.json();
-            console.log('data.json 파일 로드 성공');
+            console.log('설문 데이터 로드 성공');
         } else {
             throw new Error('data.json 파일을 찾을 수 없습니다');
         }
@@ -115,115 +114,18 @@ async function loadSurveyData() {
     } catch (error) {
         console.error('설문 데이터 로드 오류:', error);
         
-        // 기본 데이터로 폴백
-        console.log('기본 데이터 사용');
-        surveyData = getDefaultSurveyData();
-        buildSurvey(surveyData);
-        
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('surveyContainer').style.display = 'block';
+        // 오류 메시지 표시
+        document.getElementById('loading').innerHTML = `
+            <div style="text-align: center; padding: 20px;">
+                <h2>오류가 발생했습니다</h2>
+                <p>설문 데이터를 불러올 수 없습니다.</p>
+                <p>잠시 후 다시 시도해주세요.</p>
+                <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 20px;">
+                    새로고침
+                </button>
+            </div>
+        `;
     }
-}
-
-// 기본 설문 데이터
-function getDefaultSurveyData() {
-    return {
-        "survey": {
-            "id": "jinan-policy-survey-2025",
-            "title": "진안군 행정정책 입안 시 대규모 여론조사 필요성 조사",
-            "description": "진안군에서 행정정책을 수립할 때 핸드폰이나 컴퓨터를 활용한 대규모 여론조사의 필요성과 효과성에 대한 군민 의견을 수렴하는 설문조사입니다.",
-            "category": "정책조사",
-            "estimatedTime": 7,
-            "maxResponses": 10000,
-            "period": {
-                "start": "2025.07.21",
-                "end": "2025.08.20"
-            },
-            "welcomeMessage": {
-                "title": "안녕하세요, 진안군입니다.",
-                "content": [
-                    "본 설문조사는 진안군의 행정정책 수립 과정에서 디지털 기반 여론조사 도입에 대한 군민 여러분의 소중한 의견을 듣고자 실시됩니다.",
-                    "여러분의 참여가 더 나은 진안군을 만드는 데 큰 도움이 됩니다.",
-                    "※ 모든 응답은 통계 목적으로만 사용되며, 개인정보는 철저히 보호됩니다."
-                ]
-            },
-            "thankYouMessage": {
-                "title": "설문조사 완료",
-                "content": [
-                    "설문조사에 참여해 주셔서 감사합니다.",
-                    "여러분의 소중한 의견은 진안군의 정책 수립에 반영될 예정입니다.",
-                    "더 나은 진안군을 위해 함께해 주세요!"
-                ]
-            }
-        },
-        "sections": [
-            {
-                "id": "demographics",
-                "title": "📝 1. 응답자 기본정보",
-                "description": "통계 분석을 위한 기본적인 정보를 수집합니다",
-                "order": 1
-            },
-            {
-                "id": "policy_participation",
-                "title": "🏛️ 2. 현재 정책 참여 현황",
-                "description": "진안군 정책에 대한 현재 참여도와 관심도를 조사합니다",
-                "order": 2
-            }
-        ],
-        "questions": [
-            {
-                "id": "gender",
-                "sectionId": "demographics",
-                "order": 1,
-                "text": "귀하의 성별은 무엇입니까?",
-                "type": "radio",
-                "required": true,
-                "helpText": "통계 분석을 위한 정보입니다.",
-                "options": [
-                    { "value": "male", "text": "남성", "order": 1 },
-                    { "value": "female", "text": "여성", "order": 2 },
-                    { "value": "other", "text": "기타", "order": 3 },
-                    { "value": "prefer_not_to_say", "text": "응답하지 않음", "order": 4 }
-                ]
-            },
-            {
-                "id": "age",
-                "sectionId": "demographics",
-                "order": 2,
-                "text": "귀하의 연령대는 어떻게 됩니까?",
-                "type": "radio",
-                "required": true,
-                "options": [
-                    { "value": "under_20", "text": "20세 미만", "order": 1 },
-                    { "value": "20s", "text": "20-29세", "order": 2 },
-                    { "value": "30s", "text": "30-39세", "order": 3 },
-                    { "value": "40s", "text": "40-49세", "order": 4 },
-                    { "value": "50s", "text": "50-59세", "order": 5 },
-                    { "value": "60s", "text": "60-69세", "order": 6 },
-                    { "value": "over_70", "text": "70세 이상", "order": 7 }
-                ]
-            },
-            {
-                "id": "policy_interest",
-                "sectionId": "policy_participation",
-                "order": 3,
-                "text": "평소 진안군의 행정정책에 대한 관심도는 어느 정도입니까?",
-                "type": "scale",
-                "required": true,
-                "scaleConfig": {
-                    "min": 1,
-                    "max": 5,
-                    "labels": {
-                        "1": "전혀<br>관심없음",
-                        "2": "관심없음",
-                        "3": "보통",
-                        "4": "관심있음",
-                        "5": "매우<br>관심있음"
-                    }
-                }
-            }
-        ]
-    };
 }
 
 // 설문조사 UI 구성
@@ -263,7 +165,7 @@ function buildSurvey(data) {
 // 섹션 구성
 function buildSections(data) {
     const sectionsContainer = document.getElementById('sectionsContainer');
-    sectionsContainer.innerHTML = ''; // 기존 내용 제거
+    sectionsContainer.innerHTML = '';
     
     const sections = data.sections.sort((a, b) => a.order - b.order);
     
@@ -670,7 +572,7 @@ async function handleFormSubmit(event) {
     } catch (error) {
         console.error('제출 오류:', error);
         
-        // 사용자 친화적인 에러 메시지 표시
+        // 에러 메시지 표시
         showNotification(error.message || '제출 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.', 'error');
         
         // 버튼 복구
@@ -685,30 +587,13 @@ async function handleFormSubmit(event) {
     }
 }
 
-// 서버로 데이터 전송 (로컬 개발 환경용)
+// 서버로 데이터 전송
 async function submitToServer(data) {
+    // API_ENDPOINT를 실제 서버 엔드포인트로 변경하세요
+    const API_ENDPOINT = 'https://your-server.com/api/surveys/submit';
+    
     try {
-        // 로컬 개발 환경에서는 실제 서버가 없으므로 시뮬레이션
-        if (window.location.hostname === 'localhost' || 
-            window.location.hostname === '127.0.0.1' || 
-            window.location.protocol === 'file:') {
-            
-            // 2초 지연 후 성공 시뮬레이션
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-            // 콘솔에 제출 데이터 출력
-            console.log('설문 제출 데이터:', data);
-            
-            // 성공 응답 시뮬레이션
-            return {
-                success: true,
-                message: '설문이 성공적으로 제출되었습니다.',
-                submissionId: `SUB-${Date.now()}`
-            };
-        }
-        
-        // 실제 서버 환경
-        const response = await fetch('/api/surveys/submit', {
+        const response = await fetch(API_ENDPOINT, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -733,9 +618,6 @@ async function submitToServer(data) {
                 case 401:
                 case 403:
                     errorMessage = '권한이 없습니다. 페이지를 새로고침 후 다시 시도해 주세요.';
-                    break;
-                case 405:
-                    errorMessage = '서버 설정에 문제가 있습니다. 관리자에게 문의해 주세요.';
                     break;
                 default:
                     errorMessage = '일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
@@ -776,6 +658,7 @@ async function syncResponses() {
     
     // 성공적으로 동기화되면 삭제
     localStorage.removeItem('pendingSubmissions');
+    showNotification('오프라인 동안 저장된 응답이 성공적으로 제출되었습니다.', 'success');
 }
 
 // 감사 화면 표시
@@ -807,6 +690,7 @@ function handleReset() {
     });
     
     updateProgress();
+    showNotification('모든 응답이 초기화되었습니다.', 'info');
 }
 
 // 로컬 스토리지 관리
@@ -860,6 +744,7 @@ function restoreSavedResponses() {
             });
             
             updateProgress();
+            showNotification('이전에 작성하던 응답이 복원되었습니다.', 'info');
         }
     }
 }
@@ -918,16 +803,4 @@ function startNewSurvey() {
     if (confirm('저장된 응답을 복원하여 수정하시겠습니까?')) {
         window.location.reload();
     }
-}
-
-// 디버그 모드 (개발용)
-if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    window.surveyDebug = {
-        getResponses: () => responses,
-        getSurveyData: () => surveyData,
-        clearAll: () => {
-            localStorage.clear();
-            location.reload();
-        }
-    };
 }
